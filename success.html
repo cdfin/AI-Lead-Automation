@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success - Clayton's AI Stack</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .success-container {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            animation: fadeInUp 0.5s ease;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+        }
+        h1 {
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .next-steps {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        .next-steps h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+        .next-steps ol {
+            margin-left: 1.5rem;
+            color: #4b5563;
+        }
+        .next-steps li {
+            margin-bottom: 0.5rem;
+        }
+        .button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .button:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h1>Welcome Aboard! 🎉</h1>
+        <p>Your payment was successful. I'm excited to help you capture every lead and grow your business!</p>
+        
+        <div class="next-steps">
+            <h2>What Happens Next:</h2>
+            <ol>
+                <li>📧 Check your email for setup instructions (arriving in 5 minutes)</li>
+                <li>📅 Book your setup call using the link in the email</li>
+                <li>🔧 We'll configure your AI system together (takes 1 hour)</li>
+                <li>🚀 Go live and start capturing leads immediately</li>
+            </ol>
+        </div>
+        
+        <p><strong>Questions?</strong> Text me at (850) 123-4567 or email clayton@claytonaistack.com</p>
+        
+        <a href="https://calendly.com/clayton-ai/setup" class="button">Schedule Setup Call Now</a>
+    </div>
+
+    <script>
+        // Get session details from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+        
+        if (sessionId) {
+            // Fetch session details
+            fetch(`/api/success?session_id=${sessionId}`)
+                .then(res => res.json())
+                .then(data => {
+                    console.log('Purchase successful:', data);
+                    // You could customize the page based on purchase type
+                })
+                .catch(err => console.error('Error:', err));
+        }
+    </script>
+</body>
+</html>
