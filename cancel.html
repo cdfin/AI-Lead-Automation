@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Cancelled - Clayton's AI Stack</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .cancel-container {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .cancel-icon {
+            width: 80px;
+            height: 80px;
+            background: #fef3c7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+        }
+        h1 {
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .reasons {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        .reasons h2 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+        .reasons ul {
+            margin-left: 1.5rem;
+            color: #4b5563;
+        }
+        .reasons li {
+            margin-bottom: 0.5rem;
+        }
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .button-primary {
+            background: #2563eb;
+            color: white;
+        }
+        .button-primary:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+        }
+        .button-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        .button-secondary:hover {
+            background: #d1d5db;
+        }
+    </style>
+</head>
+<body>
+    <div class="cancel-container">
+        <div class="cancel-icon">🤔</div>
+        <h1>Purchase Cancelled</h1>
+        <p>No worries! I understand that timing and budget are important considerations.</p>
+        
+        <div class="reasons">
+            <h2>Common concerns I can help with:</h2>
+            <ul>
+                <li>💰 Need a payment plan? I offer split payments</li>
+                <li>❓ Have questions? Let's do a free 15-minute demo</li>
+                <li>📊 Want to see ROI first? I have case studies</li>
+                <li>🤝 Prefer to start smaller? Ask about the pilot program</li>
+            </ul>
+        </div>
+        
+        <p><strong>Remember:</strong> Every day without automation, you're losing leads to faster competitors.</p>
+        
+        <div class="buttons">
+            <a href="/" class="button button-primary">Try Again</a>
+            <a href="https://calendly.com/clayton-ai/demo" class="button button-secondary">Book Free Demo</a>
+        </div>
+        
+        <p style="margin-top: 2rem; font-size: 0.875rem;">
+            Questions? Text (850) 123-4567 or email clayton@claytonaistack.com
+        </p>
+    </div>
+</body>
+</html>
