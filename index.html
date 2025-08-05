@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clayton's AI Stack - Never Miss Another Lead | AI Implementation for SMBs</title>
+    <meta name="description" content="Former VP of Sales implements AI that actually closes deals. Automate lead follow-up, scoring, and responses. $299 one-time setup. ROI guaranteed.">
+    
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --dark: #111827;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 140px 5% 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-button {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .hero-button-primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .hero-button-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .hero-button-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .hero-button-secondary:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        .hero-demo {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .demo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .demo-badge {
+            background: var(--secondary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .demo-lead {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .demo-lead:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .lead-score {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 4rem 5%;
+            background: white;
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 12px;
+            background: var(--light);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6b7280;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 5rem 5%;
+            background: var(--light);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: #6b7280;
+        }
+
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            list-style: none;
+        }
+
+        .service-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .service-features li::before {
+            content: "✓";
+            color: var(--secondary);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Industries Section */
+        .industries {
+            padding: 5rem 5%;
+            background: white;
+        }
+
+        .industries-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .industry-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 12px;
+            background: var(--light);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .industry-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            background: var(--gradient);
+            color: white;
+        }
+
+        .industry-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .industry-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .industry-metric {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 5rem 5%;
+            background: var(--light);
+        }
+
+        .pricing-cards {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .pricing-card.featured::before {
+            content: "MOST POPULAR";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        .pricing-price span {
+            font-size: 1rem;
+            color: #6b7280;
+            font-weight: normal;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+        }
+
+        .pricing-features li::before {
+            content: "✓";
+            color: var(--secondary);
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+
+        .pricing-cta {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pricing-cta:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 5rem 5%;
+            background: white;
+        }
+
+        .testimonials-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .author-info h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        .author-info p {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 5%;
+            background: var(--gradient);
+            color: white;
+        }
+
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .form-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 2rem 5%;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid,
+            .services-grid,
+            .industries-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Calendly Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .close-modal:hover {
+            color: var(--dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Clayton's AI Stack</div>
+            <div class="nav-links">
+                <a href="#services">Services</a>
+                <a href="#industries">Industries</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#contact">Contact</a>
+                <a href="#book-demo" class="cta-button" onclick="openCalendly()">Book Demo</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Stop Losing Leads.<br>Start Closing Deals.</h1>
+                <p>Former VP of Sales implements AI that actually generates revenue. Automated lead scoring, instant follow-ups, and 20% more conversions - guaranteed.</p>
+                <div class="hero-buttons">
+                    <a href="#pricing" class="hero-button hero-button-primary">Get Started - $299</a>
+                    <a href="#demo" class="hero-button hero-button-secondary" onclick="openCalendly()">See Live Demo</a>
+                </div>
+            </div>
+            <div class="hero-demo">
+                <div class="demo-header">
+                    <div class="demo-title">Live Lead Dashboard</div>
+                    <div class="demo-badge">LIVE</div>
+                </div>
+                <div class="demo-lead">
+                    <strong>Sarah Johnson</strong> - Real Estate Inquiry
+                    <span class="lead-score">Score: 9/10</span>
+                    <div style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem;">
+                        "Looking for 3BR home in Destin area, pre-approved for $500k"
+                    </div>
+                    <div style="color: #10b981; font-size: 0.875rem; margin-top: 0.5rem;">
+                        ✓ Auto-reply sent in 47 seconds
+                    </div>
+                </div>
+                <div class="demo-lead">
+                    <strong>Mike Thompson</strong> - HVAC Service Request
+                    <span class="lead-score">Score: 8/10</span>
+                    <div style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem;">
+                        "AC not working, need service ASAP"
+                    </div>
+                    <div style="color: #10b981; font-size: 0.875rem; margin-top: 0.5rem;">
+                        ✓ Appointment scheduled automatically
+                    </div>
+                </div>
+                <div class="demo-lead">
+                    <strong>Jennifer Davis</strong> - Legal Consultation
+                    <span class="lead-score">Score: 7/10</span>
+                    <div style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem;">
+                        "Need help with business contract review"
+                    </div>
+                    <div style="color: #10b981; font-size: 0.875rem; margin-top: 0.5rem;">
+                        ✓ Intake form sent, calendar link provided
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">47 sec</div>
+                <div class="stat-label">Average Response Time</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">92%</div>
+                <div class="stat-label">Lead Engagement Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3.7x</div>
+                <div class="stat-label">ROI in First Month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Always Working</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-header">
+            <h2>One Setup. Complete Automation.</h2>
+            <p>Everything you need to capture, qualify, and convert leads automatically</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>Intelligent Lead Scoring</h3>
+                <p>AI analyzes every lead for buying intent and urgency, prioritizing your hottest prospects</p>
+                <ul class="service-features">
+                    <li>GPT-4 powered analysis</li>
+                    <li>Custom scoring criteria</li>
+                    <li>Real-time prioritization</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <h3>Instant Auto-Response</h3>
+                <p>Personalized emails sent within seconds, not hours or days</p>
+                <ul class="service-features">
+                    <li>Industry-specific templates</li>
+                    <li>Contextual responses</li>
+                    <li>Follow-up sequences</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔄</div>
+                <h3>Seamless Integration</h3>
+                <p>Works with your existing tools - no complicated migrations</p>
+                <ul class="service-features">
+                    <li>Gmail & Google Workspace</li>
+                    <li>Any website form</li>
+                    <li>Popular CRMs</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industries Section -->
+    <section class="industries" id="industries">
+        <div class="section-header">
+            <h2>Built for Your Industry</h2>
+            <p>Specialized solutions that understand your unique business needs</p>
+        </div>
+        <div class="industries-grid">
+            <div class="industry-card">
+                <div class="industry-icon">🏠</div>
+                <h3>Real Estate</h3>
+                <div class="industry-metric">40% more showings</div>
+            </div>
+            <div class="industry-card">
+                <div class="industry-icon">⚖️</div>
+                <h3>Law Firms</h3>
+                <div class="industry-metric">60% faster intake</div>
+            </div>
+            <div class="industry-card">
+                <div class="industry-icon">🔧</div>
+                <h3>Home Services</h3>
+                <div class="industry-metric">25% more bookings</div>
+            </div>
+            <div class="industry-card">
+                <div class="industry-icon">🏥</div>
+                <h3>Medical/Spa</h3>
+                <div class="industry-metric">30% fewer no-shows</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="section-header">
+            <h2>Simple, Transparent Pricing</h2>
+            <p>One-time setup, lifetime value</p>
+        </div>
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>One-Time Setup</h3>
+                    <div class="pricing-price">$299<span></span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li>Complete AI automation setup</li>
+                    <li>Lead scoring system</li>
+                    <li>Auto-response configuration</li>
+                    <li>Google Sheets integration</li>
+                    <li>Gmail/email integration</li>
+                    <li>Custom industry templates</li>
+                    <li>Testing & optimization</li>
+                    <li>7-day support included</li>
+                </ul>
+                <button class="pricing-cta" onclick="purchaseSetup()">Get Started Now</button>
+            </div>
+            <div class="pricing-card featured">
+                <div class="pricing-header">
+                    <h3>Setup + Monthly Support</h3>
+                    <div class="pricing-price">$299<span> + $49/mo</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li>Everything in One-Time Setup</li>
+                    <li>Monthly optimization</li>
+                    <li>New automation workflows</li>
+                    <li>Performance reporting</li>
+                    <li>Priority support</li>
+                    <li>Template updates</li>
+                    <li>Advanced integrations</li>
+                    <li>Dedicated success manager</li>
+                </ul>
+                <button class="pricing-cta" onclick="purchaseBundle()">Most Popular Option</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="section-header">
+            <h2>Real Results from Real Businesses</h2>
+            <p>See what Florida SMBs are saying about their AI transformation</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p class="testimonial-text">"We went from missing half our leads to responding in under a minute. Closed 5 extra deals in the first month alone."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">JM</div>
+                    <div class="author-info">
+                        <h4>Jessica Martinez</h4>
+                        <p>Coastal Realty Group</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"The ROI was immediate. We're booking 30% more service calls without adding staff. This pays for itself daily."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">RT</div>
+                    <div class="author-info">
+                        <h4>Robert Taylor</h4>
+                        <p>Emerald Coast HVAC</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Client intake used to take hours. Now it's automated and we can focus on actually practicing law."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">SW</div>
+                    <div class="author-info">
+                        <h4>Sarah Williams</h4>
+                        <p>Williams Law Office</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-content">
+            <h2>Ready to Stop Losing Leads?</h2>
+            <p>Get your AI automation set up this week</p>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="business">Business Type</label>
+                    <select id="business" name="business" required>
+                        <option value="">Select your industry...</option>
+                        <option value="real-estate">Real Estate</option>
+                        <option value="law-firm">Law Firm</option>
+                        <option value="hvac">HVAC/Plumbing</option>
+                        <option value="contractor">General Contractor</option>
+                        <option value="medical">Medical/Dental</option>
+                        <option value="spa">Spa/Wellness</option>
+                        <option value="other">Other Service Business</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Tell me about your lead challenges</label>
+                    <textarea id="message" name="message" rows="4"></textarea>
+                </div>
+                <button type="submit" class="form-submit">Get Your Free Strategy Call</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="mailto:clayton@claytonaistack.com">Email</a>
+                <a href="https://linkedin.com/in/clayton" target="_blank">LinkedIn</a>
+                <a href="tel:+1234567890">Call Now</a>
+            </div>
+            <p>&copy; 2024 Clayton's AI Stack. Miramar Beach, FL.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for Calendly -->
+    <div id="calendlyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCalendly()">&times;</span>
+            <h2>Schedule Your Demo</h2>
+            <p>Choose a time that works for you:</p>
+            <!-- Calendly inline widget begin -->
+            <div class="calendly-inline-widget" data-url="https://calendly.com/clayton-ai/demo" style="min-width:320px;height:630px;"></div>
+            <!-- Calendly inline widget end -->
+        </div>
+    </div>
+
+    <script>
+        // Stripe configuration
+        const stripe = Stripe('pk_test_YOUR_STRIPE_KEY'); // Replace with your Stripe key
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Here you would send to your backend
+            console.log('Form submitted:', data);
+            
+            // Show success message
+            alert('Thanks! I\'ll be in touch within 24 hours to schedule your free strategy call.');
+            this.reset();
+        });
+
+        // Calendly functions
+        function openCalendly() {
+            document.getElementById('calendlyModal').classList.add('show');
+            // Load Calendly script if not already loaded
+            if (!document.querySelector('script[src*="calendly"]')) {
+                const script = document.createElement('script');
+                script.src = 'https://assets.calendly.com/assets/external/widget.js';
+                script.async = true;
+                document.body.appendChild(script);
+            }
+        }
+
+        function closeCalendly() {
+            document.getElementById('calendlyModal').classList.remove('show');
+        }
+
+        // Stripe payment functions
+        async function purchaseSetup() {
+            // Create checkout session for one-time payment
+            try {
+                const response = await fetch('/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        priceId: 'price_setup_299', // Your Stripe price ID
+                        mode: 'payment'
+                    })
+                });
+                
+                const session = await response.json();
+                
+                // Redirect to Stripe Checkout
+                const { error } = await stripe.redirectToCheckout({
+                    sessionId: session.id,
+                });
+                
+                if (error) {
+                    console.error('Stripe error:', error);
+                    alert('Payment setup in progress. Contact clayton@claytonaistack.com to complete purchase.');
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                alert('Ready to purchase? Contact clayton@claytonaistack.com or call to get started immediately.');
+            }
+        }
+
+        async function purchaseBundle() {
+            // Create checkout session for subscription
+            try {
+                const response = await fetch('/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        setupPriceId: 'price_setup_299',
+                        subscriptionPriceId: 'price_monthly_49',
+                        mode: 'subscription'
+                    })
+                });
+                
+                const session = await response.json();
+                
+                // Redirect to Stripe Checkout
+                const { error } = await stripe.redirectToCheckout({
+                    sessionId: session.id,
+                });
+                
+                if (error) {
+                    console.error('Stripe error:', error);
+                    alert('Payment setup in progress. Contact clayton@claytonaistack.com to complete purchase.');
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                alert('Ready to purchase? Contact clayton@claytonaistack.com or call to get started immediately.');
+            }
+        }
+
+        // Animate numbers on scroll
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.stat-card, .service-card, .industry-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add floating animation to hero demo
+        const demoLeads = document.querySelectorAll('.demo-lead');
+        demoLeads.forEach((lead, index) => {
+            setTimeout(() => {
+                lead.style.animation = `fadeInUp 0.5s ease ${index * 0.2}s both`;
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
