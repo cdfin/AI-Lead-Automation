@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Lead Scoring Dashboard - Clayton's AI Stack</title>
+    <title>Emerlytics AI Dashboard - Live Lead Intelligence</title>
     
     <style>
         * {
@@ -13,48 +13,83 @@
         }
 
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --dark: #111827;
-            --gray: #6b7280;
-            --light: #f3f4f6;
+            --emerald: #10b981;
+            --emerald-dark: #059669;
+            --ocean: #0891b2;
+            --sand: #fbbf24;
+            --coral: #f87171;
+            --purple: #a78bfa;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light: #f8fafc;
             --white: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gradient: linear-gradient(135deg, #10b981 0%, #0891b2 100%);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Header */
-        .header {
-            background: var(--white);
+        .dashboard-header {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
             padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
         .logo {
             font-size: 1.5rem;
             font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--emerald);
+            border-radius: 100px;
+            font-size: 0.875rem;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--emerald);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
         }
 
         .header-stats {
@@ -66,348 +101,554 @@
             text-align: center;
         }
 
-        .header-stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .header-stat-label {
-            font-size: 0.75rem;
-            color: var(--gray);
-            text-transform: uppercase;
-        }
-
-        /* Main Layout */
-        .dashboard {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-
-        /* Controls */
-        .controls {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .control-group label {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--gray);
-        }
-
-        .control-group select,
-        .control-group input {
-            padding: 0.5rem 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            transition: all 0.3s;
-            background: var(--white);
-        }
-
-        .control-group select:focus,
-        .control-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .btn {
-            padding: 0.5rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: var(--white);
-        }
-
-        .btn-secondary:hover {
-            background: #059669;
-            transform: translateY(-2px);
-        }
-
-        /* Grid Layout */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 2rem;
-        }
-
-        /* Leads Table */
-        .leads-section {
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-
-        .section-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-
-        .leads-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .leads-table th {
-            background: var(--light);
-            padding: 0.75rem 1rem;
-            text-align: left;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--gray);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .leads-table td {
-            padding: 1rem;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .leads-table tr:hover {
-            background: #fafafa;
-        }
-
-        .lead-name {
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .lead-email {
-            font-size: 0.875rem;
-            color: var(--gray);
-        }
-
-        .lead-message {
-            font-size: 0.875rem;
-            color: var(--gray);
-            max-width: 300px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .lead-score {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-
-        .score-high {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .score-medium {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .score-low {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .lead-status {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-new {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .status-contacted {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .status-qualified {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .lead-time {
-            font-size: 0.875rem;
-            color: var(--gray);
-        }
-
-        /* Sidebar */
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        /* Stats Cards */
-        .stats-card {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 1rem;
-            background: var(--light);
-            border-radius: 8px;
-        }
-
         .stat-value {
             font-size: 1.5rem;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--emerald);
         }
 
         .stat-label {
             font-size: 0.75rem;
             color: var(--gray);
             text-transform: uppercase;
-            margin-top: 0.25rem;
         }
 
-        /* Response Templates */
-        .templates-card {
-            background: var(--white);
-            padding: 1.5rem;
+        /* Main Grid */
+        .dashboard-container {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
         }
 
-        .template-preview {
-            background: var(--light);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--emerald);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .metric-title {
             font-size: 0.875rem;
-            line-height: 1.6;
+            color: var(--gray);
+            text-transform: uppercase;
         }
 
-        .template-header {
-            font-weight: 600;
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
             margin-bottom: 0.5rem;
-            color: var(--primary);
         }
 
-        /* AI Analysis */
-        .ai-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            color: var(--white);
-        }
-
-        .ai-insight {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            font-size: 0.875rem;
-        }
-
-        .ai-recommendation {
+        .metric-change {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin-top: 0.5rem;
+            font-size: 0.875rem;
         }
 
-        .ai-icon {
+        .change-positive {
+            color: var(--success);
+        }
+
+        .change-negative {
+            color: var(--danger);
+        }
+
+        /* Main Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        /* Lead Feed */
+        .lead-feed {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .feed-header {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .feed-title {
             font-size: 1.25rem;
+            font-weight: 600;
         }
 
-        /* Notifications */
-        .notification {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--secondary);
-            color: var(--white);
-            padding: 1rem 1.5rem;
+        .feed-filters {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            display: none;
-            animation: slideIn 0.3s ease;
+            color: var(--gray);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .notification.show {
-            display: block;
+        .filter-btn.active {
+            background: var(--gradient);
+            color: white;
+            border-color: transparent;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--emerald);
+        }
+
+        .leads-list {
+            padding: 1rem;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .lead-item {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+            animation: slideIn 0.5s ease;
         }
 
         @keyframes slideIn {
             from {
-                transform: translateX(100%);
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .lead-item:hover {
+            border-color: var(--emerald);
+            transform: translateX(5px);
+        }
+
+        .lead-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .lead-info h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .lead-source {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .lead-score-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .score-high {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--emerald);
+            border: 1px solid var(--emerald);
+        }
+
+        .score-medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .score-low {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .lead-message {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .lead-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .action-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .action-icon {
+            color: var(--emerald);
+        }
+
+        /* AI Analysis Panel */
+        .ai-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ai-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .ai-title {
+            font-weight: 600;
+        }
+
+        .ai-subtitle {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .ai-insight {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid var(--emerald);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .insight-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--emerald);
+        }
+
+        .insight-text {
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        /* Response Time Chart */
+        .chart-container {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .time-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 150px;
+            margin-bottom: 1rem;
+        }
+
+        .time-bar {
+            flex: 1;
+            margin: 0 0.25rem;
+            background: var(--gradient);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .time-bar:hover {
+            opacity: 0.8;
+        }
+
+        .time-label {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        /* Lead Map */
+        .lead-map {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .map-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='20' height='20' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 20 0 L 0 0 0 20' fill='none' stroke='%23ffffff' stroke-width='0.1' opacity='0.2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23grid)' /%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .map-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 1);
+            animation: ripple 2s infinite;
+        }
+
+        @keyframes ripple {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        /* Activity Timeline */
+        .activity-timeline {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            width: 2px;
+            height: calc(100% + 0.5rem);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-desc {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .timeline-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        /* Performance Gauge */
+        .gauge-container {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .gauge {
+            width: 200px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .gauge-bg {
+            width: 100%;
+            height: 100%;
+            border: 10px solid rgba(255,255,255,0.1);
+            border-bottom: none;
+            border-radius: 100px 100px 0 0;
+        }
+
+        .gauge-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 10px solid transparent;
+            border-bottom: none;
+            border-radius: 100px 100px 0 0;
+            border-color: var(--emerald);
+            transform-origin: center bottom;
+            transition: transform 1s ease;
+        }
+
+        .gauge-value {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideUp 0.5s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100px);
                 opacity: 0;
             }
             to {
-                transform: translateX(0);
+                transform: translateY(0);
                 opacity: 1;
             }
         }
 
-        /* Responsive */
+        .notification-badge.hide {
+            animation: slideDown 0.5s ease forwards;
+        }
+
+        @keyframes slideDown {
+            to {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile Responsive */
         @media (max-width: 1024px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .metrics-row {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -416,554 +657,512 @@
                 display: none;
             }
 
-            .controls {
-                flex-direction: column;
+            .metrics-row {
+                grid-template-columns: 1fr;
             }
 
-            .control-group {
-                width: 100%;
-            }
-
-            .leads-table {
-                font-size: 0.875rem;
-            }
-
-            .leads-table th,
-            .leads-table td {
-                padding: 0.5rem;
+            .lead-actions {
+                grid-template-columns: 1fr;
             }
         }
 
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--white);
-            animation: spin 1s ease-in-out infinite;
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
         }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--gray);
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
         }
 
-        .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.3);
         }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
+    <header class="dashboard-header">
         <div class="header-content">
-            <div class="logo">AI Lead Dashboard</div>
+            <div class="logo-section">
+                <div class="logo">Emerlytics AI</div>
+                <div class="live-indicator">
+                    <div class="live-dot"></div>
+                    <span>LIVE SYSTEM</span>
+                </div>
+            </div>
             <div class="header-stats">
                 <div class="header-stat">
-                    <div class="header-stat-value" id="totalLeads">0</div>
-                    <div class="header-stat-label">Total Leads</div>
+                    <div class="stat-value" id="total-leads">0</div>
+                    <div class="stat-label">Total Leads</div>
                 </div>
                 <div class="header-stat">
-                    <div class="header-stat-value" id="responseRate">0%</div>
-                    <div class="header-stat-label">Response Rate</div>
+                    <div class="stat-value" id="response-avg">47s</div>
+                    <div class="stat-label">Avg Response</div>
                 </div>
                 <div class="header-stat">
-                    <div class="header-stat-value" id="avgScore">0</div>
-                    <div class="header-stat-label">Avg Score</div>
+                    <div class="stat-value" id="conversion-rate">92%</div>
+                    <div class="stat-label">Conversion</div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Dashboard -->
-    <div class="dashboard">
-        <!-- Controls -->
-        <div class="controls">
-            <div class="control-group">
-                <label>Industry</label>
-                <select id="industryFilter">
-                    <option value="all">All Industries</option>
-                    <option value="real-estate">Real Estate</option>
-                    <option value="law-firm">Law Firm</option>
-                    <option value="hvac">HVAC/Plumbing</option>
-                    <option value="medical">Medical/Spa</option>
-                </select>
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <!-- Metrics Row -->
+        <div class="metrics-row">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">Leads Today</div>
+                    <div class="metric-icon">📈</div>
+                </div>
+                <div class="metric-value" id="leads-today">24</div>
+                <div class="metric-change change-positive">
+                    <span>↑</span>
+                    <span>32% from yesterday</span>
+                </div>
             </div>
-            <div class="control-group">
-                <label>Score Range</label>
-                <select id="scoreFilter">
-                    <option value="all">All Scores</option>
-                    <option value="high">High (8-10)</option>
-                    <option value="medium">Medium (5-7)</option>
-                    <option value="low">Low (1-4)</option>
-                </select>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">Hot Leads</div>
+                    <div class="metric-icon">🔥</div>
+                </div>
+                <div class="metric-value" id="hot-leads">8</div>
+                <div class="metric-change change-positive">
+                    <span>↑</span>
+                    <span>Need immediate attention</span>
+                </div>
             </div>
-            <div class="control-group">
-                <label>Status</label>
-                <select id="statusFilter">
-                    <option value="all">All Status</option>
-                    <option value="new">New</option>
-                    <option value="contacted">Contacted</option>
-                    <option value="qualified">Qualified</option>
-                </select>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">Revenue Pipeline</div>
+                    <div class="metric-icon">💰</div>
+                </div>
+                <div class="metric-value">$47.2k</div>
+                <div class="metric-change change-positive">
+                    <span>↑</span>
+                    <span>$12k from AI captures</span>
+                </div>
             </div>
-            <button class="btn btn-primary" onclick="simulateNewLead()">
-                🎯 Simulate New Lead
-            </button>
-            <button class="btn btn-secondary" onclick="exportData()">
-                📊 Export Data
-            </button>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-title">Response Rate</div>
+                    <div class="metric-icon">⚡</div>
+                </div>
+                <div class="metric-value">100%</div>
+                <div class="metric-change change-positive">
+                    <span>✓</span>
+                    <span>All leads contacted</span>
+                </div>
+            </div>
         </div>
 
         <!-- Main Grid -->
         <div class="dashboard-grid">
-            <!-- Leads Table -->
-            <div class="leads-section">
-                <div class="section-header">
-                    <h2 class="section-title">Lead Pipeline</h2>
-                    <span id="leadCount">0 leads</span>
+            <!-- Lead Feed -->
+            <div class="lead-feed">
+                <div class="feed-header">
+                    <h2 class="feed-title">Live Lead Activity</h2>
+                    <div class="feed-filters">
+                        <button class="filter-btn active">All</button>
+                        <button class="filter-btn">Hot</button>
+                        <button class="filter-btn">New</button>
+                        <button class="filter-btn">Replied</button>
+                    </div>
                 </div>
-                <table class="leads-table">
-                    <thead>
-                        <tr>
-                            <th>Contact</th>
-                            <th>Message</th>
-                            <th>Score</th>
-                            <th>Status</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leadsTableBody">
-                        <!-- Leads will be inserted here -->
-                    </tbody>
-                </table>
+                <div class="leads-list" id="leads-list">
+                    <!-- Leads will be dynamically inserted here -->
+                </div>
             </div>
 
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Stats Card -->
-                <div class="stats-card">
-                    <h3 class="section-title">Performance Metrics</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value" id="hotLeads">0</div>
-                            <div class="stat-label">Hot Leads</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="conversionRate">0%</div>
-                            <div class="stat-label">Conversion</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="avgResponse">0s</div>
-                            <div class="stat-label">Avg Response</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="todayLeads">0</div>
-                            <div class="stat-label">Today</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI Analysis Card -->
+            <!-- Right Panel -->
+            <div class="ai-panel">
+                <!-- AI Insights -->
                 <div class="ai-card">
-                    <h3 class="section-title">AI Insights</h3>
+                    <div class="ai-header">
+                        <div class="ai-avatar">🤖</div>
+                        <div>
+                            <div class="ai-title">AI Intelligence</div>
+                            <div class="ai-subtitle">Real-time analysis</div>
+                        </div>
+                    </div>
                     <div class="ai-insight">
-                        <div class="ai-recommendation">
-                            <span class="ai-icon">🔥</span>
-                            <span id="aiInsight">Loading AI analysis...</span>
+                        <div class="insight-title">🎯 Priority Alert</div>
+                        <div class="insight-text" id="ai-alert">
+                            Sarah Johnson (Score: 9/10) has high buying intent. 
+                            Pre-approved buyer looking for immediate showing. 
+                            Competitors typically respond in 4 hours - you responded in 47 seconds.
+                        </div>
+                    </div>
+                    <div class="ai-insight">
+                        <div class="insight-title">📊 Pattern Detected</div>
+                        <div class="insight-text">
+                            Tuesday afternoons show 40% higher conversion. 
+                            Consider scheduling more availability.
                         </div>
                     </div>
                 </div>
 
-                <!-- Response Template -->
-                <div class="templates-card">
-                    <h3 class="section-title">Auto-Response Preview</h3>
-                    <div class="template-preview">
-                        <div class="template-header">Email Template:</div>
-                        <div id="templatePreview">
-                            Hi [Name],<br><br>
-                            Thank you for your interest! I see you're looking for [service]. 
-                            I'd love to help you with that.<br><br>
-                            I have availability this week for a quick call. 
-                            Would tomorrow at 2 PM or Thursday at 10 AM work better for you?<br><br>
-                            Best regards,<br>
-                            Clayton
+                <!-- Response Time Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Response Time Comparison</h3>
+                        <span style="color: var(--gray); font-size: 0.875rem;">You vs Industry</span>
+                    </div>
+                    <div class="time-bars">
+                        <div class="time-bar" style="height: 90%">
+                            <div class="time-label">You: 47s</div>
                         </div>
+                        <div class="time-bar" style="height: 30%; background: var(--coral);">
+                            <div class="time-label">Industry: 4.2 hrs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Gauge -->
+                <div class="ai-card">
+                    <h3 style="margin-bottom: 1rem;">Lead Capture Performance</h3>
+                    <div class="gauge-container">
+                        <div class="gauge">
+                            <div class="gauge-bg"></div>
+                            <div class="gauge-fill" id="performance-gauge"></div>
+                            <div class="gauge-value">92%</div>
+                        </div>
+                        <div style="font-size: 0.875rem; color: var(--gray);">
+                            Outperforming 95% of competitors
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Timeline -->
+                <div class="activity-timeline">
+                    <h3 style="margin-bottom: 1rem;">Recent Activity</h3>
+                    <div id="activity-timeline">
+                        <!-- Timeline items will be inserted here -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <span id="notificationText">New lead received!</span>
+    <!-- Notification Badge -->
+    <div class="notification-badge" id="notification" style="display: none;">
+        <span style="font-size: 1.5rem;">🔥</span>
+        <div>
+            <div style="font-weight: 600;">New Hot Lead!</div>
+            <div style="font-size: 0.875rem; opacity: 0.9;" id="notification-text">AI responded in 35 seconds</div>
+        </div>
     </div>
 
     <script>
-        // Sample data for different industries
-        const sampleLeads = {
-            'real-estate': [
+        // Sample lead data for different industries
+        const leadTemplates = {
+            realEstate: [
                 {
-                    name: 'Sarah Johnson',
-                    email: 'sarah.j@email.com',
-                    message: 'Looking for a 3BR home in Destin area, pre-approved for $500k',
+                    name: "Sarah Johnson",
+                    email: "sarah.j@email.com",
+                    source: "Website Form",
+                    message: "Looking for 3BR home in Destin area, pre-approved for $500k",
                     score: 9,
-                    status: 'new',
-                    industry: 'real-estate',
-                    time: new Date(Date.now() - 1000 * 60 * 15)
+                    responseTime: 47,
+                    timestamp: new Date(Date.now() - 1000 * 60 * 5)
                 },
                 {
-                    name: 'Michael Chen',
-                    email: 'mchen@email.com',
-                    message: 'Interested in beachfront condos, cash buyer',
+                    name: "Michael Chen",
+                    email: "mchen@email.com",
+                    source: "Zillow",
+                    message: "Interested in beachfront condos, cash buyer",
                     score: 10,
-                    status: 'contacted',
-                    industry: 'real-estate',
-                    time: new Date(Date.now() - 1000 * 60 * 45)
+                    responseTime: 35,
+                    timestamp: new Date(Date.now() - 1000 * 60 * 15)
                 },
                 {
-                    name: 'Lisa Anderson',
-                    email: 'landerson@email.com',
-                    message: 'Want to list my property, need market analysis',
+                    name: "Lisa Anderson",
+                    email: "landerson@email.com",
+                    source: "Google Ads",
+                    message: "Want to list my property, need market analysis",
                     score: 8,
-                    status: 'qualified',
-                    industry: 'real-estate',
-                    time: new Date(Date.now() - 1000 * 60 * 120)
+                    responseTime: 52,
+                    timestamp: new Date(Date.now() - 1000 * 60 * 30)
                 }
             ],
-            'law-firm': [
+            hvac: [
                 {
-                    name: 'Robert Taylor',
-                    email: 'rtaylor@business.com',
-                    message: 'Need help with business contract review, urgent',
-                    score: 8,
-                    status: 'new',
-                    industry: 'law-firm',
-                    time: new Date(Date.now() - 1000 * 60 * 5)
+                    name: "Robert Taylor",
+                    email: "rtaylor@email.com",
+                    source: "Emergency Line",
+                    message: "AC not working, house is 85 degrees, need help ASAP",
+                    score: 10,
+                    responseTime: 28,
+                    timestamp: new Date(Date.now() - 1000 * 60 * 2)
                 },
                 {
-                    name: 'Jennifer Martinez',
-                    email: 'jmartinez@email.com',
-                    message: 'Looking for estate planning services',
+                    name: "Jennifer Martinez",
+                    email: "jmart@email.com",
+                    source: "Website",
+                    message: "Need quote for new HVAC system",
+                    score: 7,
+                    responseTime: 44,
+                    timestamp: new Date(Date.now() - 1000 * 60 * 45)
+                }
+            ],
+            law: [
+                {
+                    name: "David Wilson",
+                    email: "dwilson@business.com",
+                    source: "Contact Form",
+                    message: "Business contract dispute, urgent deadline approaching",
+                    score: 9,
+                    responseTime: 38,
+                    timestamp: new Date(Date.now() - 1000 * 60 * 10)
+                },
+                {
+                    name: "Amanda Foster",
+                    email: "afoster@email.com",
+                    source: "Referral",
+                    message: "Need estate planning services for family",
                     score: 6,
-                    status: 'contacted',
-                    industry: 'law-firm',
-                    time: new Date(Date.now() - 1000 * 60 * 90)
+                    responseTime: 55,
+                    timestamp: new Date(Date.now() - 1000 * 60 * 120)
                 }
             ],
-            'hvac': [
+            medical: [
                 {
-                    name: 'David Wilson',
-                    email: 'dwilson@email.com',
-                    message: 'AC not working, need service ASAP in 30A area',
-                    score: 10,
-                    status: 'new',
-                    industry: 'hvac',
-                    time: new Date(Date.now() - 1000 * 60 * 2)
-                },
-                {
-                    name: 'Amanda Foster',
-                    email: 'afoster@email.com',
-                    message: 'Want quote for new HVAC system installation',
-                    score: 7,
-                    status: 'contacted',
-                    industry: 'hvac',
-                    time: new Date(Date.now() - 1000 * 60 * 180)
-                }
-            ],
-            'medical': [
-                {
-                    name: 'Patricia Brown',
-                    email: 'pbrown@email.com',
-                    message: 'Interested in Botox consultation and pricing',
+                    name: "Patricia Brown",
+                    email: "pbrown@email.com",
+                    source: "Instagram Ad",
+                    message: "Interested in Botox consultation and pricing",
                     score: 8,
-                    status: 'new',
-                    industry: 'medical',
-                    time: new Date(Date.now() - 1000 * 60 * 30)
+                    responseTime: 41,
+                    timestamp: new Date(Date.now() - 1000 * 60 * 25)
                 },
                 {
-                    name: 'James Thompson',
-                    email: 'jthompson@email.com',
-                    message: 'Need appointment for laser treatment',
+                    name: "James Thompson",
+                    email: "jthompson@email.com",
+                    source: "Google",
+                    message: "Looking for laser treatment options",
                     score: 7,
-                    status: 'qualified',
-                    industry: 'medical',
-                    time: new Date(Date.now() - 1000 * 60 * 240)
+                    responseTime: 49,
+                    timestamp: new Date(Date.now() - 1000 * 60 * 180)
                 }
             ]
         };
 
-        // Initialize leads array
+        // Combine all leads
         let allLeads = [];
-        Object.values(sampleLeads).forEach(industryLeads => {
-            allLeads = allLeads.concat(industryLeads);
+        Object.values(leadTemplates).forEach(industry => {
+            allLeads = allLeads.concat(industry);
         });
 
-        // State management
-        let currentFilter = {
-            industry: 'all',
-            score: 'all',
-            status: 'all'
-        };
+        // Sort by timestamp
+        allLeads.sort((a, b) => b.timestamp - a.timestamp);
 
-        // Initialize dashboard
-        function initDashboard() {
-            renderLeads();
-            updateStats();
-            updateAIInsights();
+        // Initialize counters
+        let totalLeads = 128;
+        let leadsToday = 24;
+        let hotLeads = 8;
+
+        // Update header stats
+        function updateHeaderStats() {
+            document.getElementById('total-leads').textContent = totalLeads;
+            document.getElementById('leads-today').textContent = leadsToday;
+            document.getElementById('hot-leads').textContent = hotLeads;
         }
 
-        // Render leads table
-        function renderLeads() {
-            const tbody = document.getElementById('leadsTableBody');
-            const filteredLeads = filterLeads();
+        // Render lead item
+        function renderLead(lead) {
+            const scoreClass = lead.score >= 8 ? 'score-high' : 
+                              lead.score >= 5 ? 'score-medium' : 'score-low';
             
-            if (filteredLeads.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="empty-state">
-                            <div class="empty-icon">📭</div>
-                            <div>No leads match your filters</div>
-                        </td>
-                    </tr>
-                `;
-                document.getElementById('leadCount').textContent = '0 leads';
-                return;
-            }
-
-            tbody.innerHTML = filteredLeads.map(lead => {
-                const scoreClass = lead.score >= 8 ? 'score-high' : 
-                                  lead.score >= 5 ? 'score-medium' : 'score-low';
-                const statusClass = `status-${lead.status}`;
-                const timeAgo = getTimeAgo(lead.time);
-                
-                return `
-                    <tr>
-                        <td>
-                            <div class="lead-name">${lead.name}</div>
-                            <div class="lead-email">${lead.email}</div>
-                        </td>
-                        <td>
-                            <div class="lead-message" title="${lead.message}">${lead.message}</div>
-                        </td>
-                        <td>
-                            <span class="lead-score ${scoreClass}">${lead.score}/10</span>
-                        </td>
-                        <td>
-                            <span class="lead-status ${statusClass}">${lead.status}</span>
-                        </td>
-                        <td>
-                            <div class="lead-time">${timeAgo}</div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-
-            document.getElementById('leadCount').textContent = `${filteredLeads.length} leads`;
-        }
-
-        // Filter leads based on current filters
-        function filterLeads() {
-            return allLeads.filter(lead => {
-                if (currentFilter.industry !== 'all' && lead.industry !== currentFilter.industry) {
-                    return false;
-                }
-                
-                if (currentFilter.score !== 'all') {
-                    if (currentFilter.score === 'high' && lead.score < 8) return false;
-                    if (currentFilter.score === 'medium' && (lead.score < 5 || lead.score > 7)) return false;
-                    if (currentFilter.score === 'low' && lead.score > 4) return false;
-                }
-                
-                if (currentFilter.status !== 'all' && lead.status !== currentFilter.status) {
-                    return false;
-                }
-                
-                return true;
-            });
-        }
-
-        // Update statistics
-        function updateStats() {
-            const filteredLeads = filterLeads();
+            const timeAgo = getTimeAgo(lead.timestamp);
             
-            // Header stats
-            document.getElementById('totalLeads').textContent = filteredLeads.length;
-            
-            const contactedLeads = filteredLeads.filter(l => l.status !== 'new').length;
-            const responseRate = filteredLeads.length > 0 ? 
-                Math.round((contactedLeads / filteredLeads.length) * 100) : 0;
-            document.getElementById('responseRate').textContent = `${responseRate}%`;
-            
-            const avgScore = filteredLeads.length > 0 ?
-                (filteredLeads.reduce((sum, l) => sum + l.score, 0) / filteredLeads.length).toFixed(1) : 0;
-            document.getElementById('avgScore').textContent = avgScore;
-            
-            // Sidebar stats
-            const hotLeads = filteredLeads.filter(l => l.score >= 8).length;
-            document.getElementById('hotLeads').textContent = hotLeads;
-            
-            const qualifiedLeads = filteredLeads.filter(l => l.status === 'qualified').length;
-            const conversionRate = filteredLeads.length > 0 ?
-                Math.round((qualifiedLeads / filteredLeads.length) * 100) : 0;
-            document.getElementById('conversionRate').textContent = `${conversionRate}%`;
-            
-            document.getElementById('avgResponse').textContent = '47s';
-            
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const todayLeads = filteredLeads.filter(l => l.time >= today).length;
-            document.getElementById('todayLeads').textContent = todayLeads;
-        }
-
-        // Update AI insights
-        function updateAIInsights() {
-            const insights = [
-                "3 hot leads need immediate follow-up. Sarah Johnson has highest conversion probability.",
-                "HVAC leads show 92% urgency pattern. Prioritize same-day response.",
-                "Real estate leads peak Tue-Thu. Schedule more availability.",
-                "Law firm inquiries convert 40% better with consultation offers.",
-                "Medical spa leads respond best to pricing transparency."
-            ];
-            
-            const randomInsight = insights[Math.floor(Math.random() * insights.length)];
-            document.getElementById('aiInsight').textContent = randomInsight;
+            return `
+                <div class="lead-item">
+                    <div class="lead-header">
+                        <div class="lead-info">
+                            <h3>${lead.name}</h3>
+                            <div class="lead-source">${lead.source} • ${lead.email}</div>
+                        </div>
+                        <div class="lead-score-badge ${scoreClass}">
+                            Score: ${lead.score}/10
+                        </div>
+                    </div>
+                    <div class="lead-message">
+                        "${lead.message}"
+                    </div>
+                    <div class="lead-actions">
+                        <div class="action-stat">
+                            <span class="action-icon">⚡</span>
+                            <span>Replied in ${lead.responseTime}s</span>
+                        </div>
+                        <div class="action-stat">
+                            <span class="action-icon">📧</span>
+                            <span>Email sent</span>
+                        </div>
+                        <div class="action-stat">
+                            <span class="action-icon">📅</span>
+                            <span>${timeAgo}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         // Get time ago string
         function getTimeAgo(date) {
             const seconds = Math.floor((new Date() - date) / 1000);
-            
             if (seconds < 60) return 'just now';
             if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
             if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
             return `${Math.floor(seconds / 86400)}d ago`;
         }
 
+        // Render all leads
+        function renderLeads() {
+            const leadsList = document.getElementById('leads-list');
+            leadsList.innerHTML = allLeads.map(lead => renderLead(lead)).join('');
+        }
+
+        // Add activity timeline item
+        function addTimelineItem(icon, title, desc, time) {
+            return `
+                <div class="timeline-item">
+                    <div class="timeline-icon">${icon}</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">${title}</div>
+                        <div class="timeline-desc">${desc}</div>
+                        <div class="timeline-time">${time}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize timeline
+        function initTimeline() {
+            const timeline = document.getElementById('activity-timeline');
+            const items = [
+                { icon: '🔥', title: 'Hot Lead Captured', desc: 'Emergency HVAC request auto-responded', time: '2 minutes ago' },
+                { icon: '📅', title: 'Appointment Booked', desc: 'Real estate showing scheduled automatically', time: '15 minutes ago' },
+                { icon: '✉️', title: 'Follow-up Sent', desc: 'AI sent 2nd touchpoint to 3 leads', time: '1 hour ago' },
+                { icon: '🎯', title: 'Lead Qualified', desc: 'Legal consultation marked high-priority', time: '2 hours ago' }
+            ];
+            
+            timeline.innerHTML = items.map(item => 
+                addTimelineItem(item.icon, item.title, item.desc, item.time)
+            ).join('');
+        }
+
         // Simulate new lead
         function simulateNewLead() {
-            const industries = ['real-estate', 'law-firm', 'hvac', 'medical'];
-            const names = ['Emma Davis', 'John Smith', 'Maria Garcia', 'Tom Wilson', 'Amy Lee'];
+            const industries = Object.keys(leadTemplates);
             const randomIndustry = industries[Math.floor(Math.random() * industries.length)];
-            const randomName = names[Math.floor(Math.random() * names.length)];
+            const template = leadTemplates[randomIndustry][0];
             
-            const messages = {
-                'real-estate': ['Need to sell my home quickly', 'Looking for investment property', 'First-time buyer, need guidance'],
-                'law-firm': ['Business formation consultation needed', 'Contract dispute, urgent help', 'Estate planning for family'],
-                'hvac': ['Heating not working properly', 'Need AC maintenance quote', 'Emergency repair needed'],
-                'medical': ['Interested in consultation', 'Want to book treatment', 'Price list request']
-            };
-            
+            const names = ['Emma Davis', 'John Smith', 'Maria Garcia', 'Tom Wilson', 'Amy Lee'];
             const newLead = {
-                name: randomName,
-                email: randomName.toLowerCase().replace(' ', '.') + '@email.com',
-                message: messages[randomIndustry][Math.floor(Math.random() * messages[randomIndustry].length)],
-                score: Math.floor(Math.random() * 5) + 6,
-                status: 'new',
-                industry: randomIndustry,
-                time: new Date()
+                ...template,
+                name: names[Math.floor(Math.random() * names.length)],
+                timestamp: new Date(),
+                responseTime: Math.floor(Math.random() * 30) + 30,
+                score: Math.floor(Math.random() * 5) + 6
             };
             
+            // Add to beginning of array
             allLeads.unshift(newLead);
+            
+            // Update counters
+            totalLeads++;
+            leadsToday++;
+            if (newLead.score >= 8) hotLeads++;
+            
+            updateHeaderStats();
             renderLeads();
-            updateStats();
             
             // Show notification
+            showNotification(`New ${newLead.score >= 8 ? 'HOT' : ''} lead from ${newLead.name}`, 
+                           `AI responded in ${newLead.responseTime} seconds`);
+        }
+
+        // Show notification
+        function showNotification(title, message) {
             const notification = document.getElementById('notification');
-            document.getElementById('notificationText').textContent = 
-                `New lead: ${newLead.name} - Score: ${newLead.score}/10 - Auto-reply sent!`;
-            notification.classList.add('show');
+            document.getElementById('notification-text').textContent = message;
+            notification.style.display = 'flex';
+            notification.classList.remove('hide');
             
             setTimeout(() => {
-                notification.classList.remove('show');
+                notification.classList.add('hide');
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 500);
             }, 5000);
-            
-            // Simulate auto-response
-            setTimeout(() => {
-                newLead.status = 'contacted';
-                renderLeads();
-                updateStats();
-            }, 2000);
         }
 
-        // Export data
-        function exportData() {
-            const filteredLeads = filterLeads();
-            const csv = [
-                ['Name', 'Email', 'Message', 'Score', 'Status', 'Industry', 'Time'],
-                ...filteredLeads.map(lead => [
-                    lead.name,
-                    lead.email,
-                    lead.message,
-                    lead.score,
-                    lead.status,
-                    lead.industry,
-                    lead.time.toISOString()
-                ])
-            ].map(row => row.join(',')).join('\n');
+        // Update AI insights periodically
+        function updateAIInsights() {
+            const insights = [
+                "Sarah Johnson (Score: 9/10) shows buying signals. Pre-approved and requesting immediate showing. High close probability.",
+                "Pattern detected: 40% more HVAC emergencies on weekends. Consider weekend premium pricing.",
+                "3 leads from Google Ads converted this week. ROI: 847%. Recommend increasing ad spend.",
+                "Legal consultation requests peak Tue-Thu. Adjust availability for maximum capture.",
+                "Medical spa leads respond best to same-day booking offers. Implement urgency messaging."
+            ];
             
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'leads-export.csv';
-            a.click();
-            window.URL.revokeObjectURL(url);
+            const randomInsight = insights[Math.floor(Math.random() * insights.length)];
+            document.getElementById('ai-alert').textContent = randomInsight;
         }
 
-        // Event listeners
-        document.getElementById('industryFilter').addEventListener('change', (e) => {
-            currentFilter.industry = e.target.value;
+        // Animate performance gauge
+        function animateGauge() {
+            const gauge = document.getElementById('performance-gauge');
+            const performance = 92; // percentage
+            const rotation = (performance / 100) * 180 - 90;
+            gauge.style.transform = `rotate(${rotation}deg)`;
+        }
+
+        // Filter leads
+        function filterLeads(type) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // In real app, would filter the leads
+            console.log('Filtering by:', type);
+        }
+
+        // Initialize dashboard
+        function initDashboard() {
+            updateHeaderStats();
             renderLeads();
-            updateStats();
-        });
+            initTimeline();
+            animateGauge();
+            
+            // Simulate new lead every 10 seconds
+            setInterval(simulateNewLead, 10000);
+            
+            // Update AI insights every 15 seconds
+            setInterval(updateAIInsights, 15000);
+            
+            // Simulate first lead after 3 seconds
+            setTimeout(simulateNewLead, 3000);
+        }
 
-        document.getElementById('scoreFilter').addEventListener('change', (e) => {
-            currentFilter.score = e.target.value;
-            renderLeads();
-            updateStats();
-        });
-
-        document.getElementById('statusFilter').addEventListener('change', (e) => {
-            currentFilter.status = e.target.value;
-            renderLeads();
-            updateStats();
-        });
-
-        // Auto-refresh simulation
-        setInterval(() => {
-            updateAIInsights();
-            // Randomly update a lead status
-            if (Math.random() > 0.7 && allLeads.length > 0) {
-                const randomLead = allLeads[Math.floor(Math.random() * allLeads.length)];
-                if (randomLead.status === 'new') {
-                    randomLead.status = 'contacted';
-                } else if (randomLead.status === 'contacted' && Math.random() > 0.5) {
-                    randomLead.status = 'qualified';
-                }
-                renderLeads();
-                updateStats();
-            }
-        }, 10000);
-
-        // Initialize on load
+        // Start dashboard
         initDashboard();
 
-        // Simulate a new lead after 3 seconds for demo effect
-        setTimeout(() => {
-            simulateNewLead();
-        }, 3000);
+        // Add filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => filterLeads(btn.textContent));
+        });
     </script>
 </body>
 </html>
