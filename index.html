@@ -492,7 +492,7 @@
 
         .roi-inputs {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -501,6 +501,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            min-width: 0;
         }
 
         .roi-input-group label {
@@ -509,11 +510,13 @@
         }
 
         .roi-input-group input {
-            padding: 0.75rem;
+            padding: 0.7rem 0.75rem;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             font-weight: 600;
+            width: 100%;
+            max-width: 100%;
         }
 
         .roi-results {
@@ -978,28 +981,34 @@
             right: -400px;
             background: white;
             padding: 1rem 1.5rem;
-            border-radius: 12px;
+            border-radius: 16px;
             box-shadow: var(--shadow-xl);
             display: flex;
             align-items: center;
-            gap: 1rem;
-            transition: right 0.3s ease;
+            gap: 0.75rem;
+            border-left: 4px solid var(--emerald);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: right 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
             z-index: 1002;
         }
 
         .notification-toast.show {
             right: 2rem;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .notification-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--emerald);
-            color: white;
-            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--emerald-dark);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.1rem;
         }
 
         /* Section Headers */
@@ -1851,24 +1860,32 @@
             { title: "Someone's looking!", message: "A medical spa in Pensacola is viewing pricing" }
         ];
 
+        let notificationTimer;
+
         function showNotification() {
             const notification = notifications[Math.floor(Math.random() * notifications.length)];
             document.getElementById('notification-title').textContent = notification.title;
             document.getElementById('notification-message').textContent = notification.message;
-            
+
             const toast = document.getElementById('notification');
-            toast.classList.add('show');
-            
-            setTimeout(() => {
+            toast.classList.remove('show');
+
+            clearTimeout(notificationTimer);
+
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+
+            notificationTimer = setTimeout(() => {
                 toast.classList.remove('show');
-            }, 5000);
+            }, 6000);
         }
 
-        // Show notification every 30 seconds
+        // Show notification every 45 seconds
         setTimeout(() => {
             showNotification();
-            setInterval(showNotification, 30000);
-        }, 5000);
+            setInterval(showNotification, 45000);
+        }, 8000);
 
         // FAQ toggle
         function toggleFAQ(element) {
