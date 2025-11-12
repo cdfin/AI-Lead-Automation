@@ -492,7 +492,7 @@
 
         .roi-inputs {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -501,6 +501,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            min-width: 0;
         }
 
         .roi-input-group label {
@@ -509,11 +510,13 @@
         }
 
         .roi-input-group input {
-            padding: 0.75rem;
+            padding: 0.7rem 0.75rem;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             font-weight: 600;
+            width: 100%;
+            max-width: 100%;
         }
 
         .roi-results {
@@ -978,28 +981,34 @@
             right: -400px;
             background: white;
             padding: 1rem 1.5rem;
-            border-radius: 12px;
+            border-radius: 16px;
             box-shadow: var(--shadow-xl);
             display: flex;
             align-items: center;
-            gap: 1rem;
-            transition: right 0.3s ease;
+            gap: 0.75rem;
+            border-left: 4px solid var(--emerald);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: right 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
             z-index: 1002;
         }
 
         .notification-toast.show {
             right: 2rem;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .notification-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--emerald);
-            color: white;
-            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--emerald-dark);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.1rem;
         }
 
         /* Section Headers */
@@ -1031,7 +1040,7 @@
 <body>
     <!-- Urgency Banner -->
     <div class="urgency-banner">
-        🔥 Limited Time: Florida businesses get 50% off setup (normally $599). Only 2 spots left for January.
+        📊 Fact: Businesses that respond in <5 minutes close 9x more deals. Your average: 4.2 hours.
     </div>
 
     <!-- Header -->
@@ -1066,57 +1075,57 @@
             <div class="hero-grid">
                 <div class="hero-content">
                     <h1>
-                        Your Competitors Respond in <span class="highlight">4 Hours</span>.<br>
-                        You'll Respond in <span class="text-gradient">47 Seconds</span>.
+                        You're Losing <span class="highlight">$12,847/Month</span><br>
+                        Because You Can't Answer Fast Enough.
                     </h1>
                     <p class="hero-subhead">
-                        While other Emerald Coast businesses lose leads to slow follow-up, 
-                        your AI responds instantly, scores leads, and books appointments 24/7.
+                        While you're busy working IN your business, web leads are calling your competitors. 
+                        Harvard says: respond in 5 minutes or lose 80% of them. Your current response time? 4+ hours.
                     </p>
                     
                     <div class="value-props">
                         <div class="value-prop">
-                            <div class="value-prop-icon">⚡</div>
+                            <div class="value-prop-icon">💸</div>
                             <div>
-                                <strong>92% of leads contacted</strong> while competitors sleep
+                                <strong>78% of buyers</strong> go with whoever responds first
                             </div>
                         </div>
                         <div class="value-prop">
-                            <div class="value-prop-icon">💰</div>
+                            <div class="value-prop-icon">⏰</div>
                             <div>
-                                <strong>Average $12,847/month</strong> in recovered revenue
+                                <strong>After 30 minutes</strong> your lead is basically dead
                             </div>
                         </div>
                         <div class="value-prop">
-                            <div class="value-prop-icon">🎯</div>
+                            <div class="value-prop-icon">📱</div>
                             <div>
-                                <strong>3.7x ROI guaranteed</strong> or your money back
+                                <strong>You're under a car</strong> while competitors steal your customer
                             </div>
                         </div>
                     </div>
 
                     <div class="hero-cta">
                         <button class="btn btn-primary" onclick="scrollToPricing()">
-                            <span>Get Started Now</span>
+                            <span>Fix This Today - $299</span>
                             <span>→</span>
                         </button>
                         <button class="btn btn-secondary" onclick="showDemo()">
-                            Watch It Work
+                            See Your Losses Live
                         </button>
                     </div>
 
                     <div class="trust-badges">
                         <div class="trust-badge">
-                            <span>✓</span>
-                            <span>Setup in 3 hours</span>
+                            <span>🔧</span>
+                            <span>Setup while you work</span>
                         </div>
                         <div class="trust-badge">
-                            <span>✓</span>
-                            <span>No technical skills needed</span>
+                            <span>💰</span>
+                            <span>Pays for itself in 2 days</span>
                         </div>
                         <div class="trust-badge">
-                            <span>✓</span>
-                            <span>Works with any website</span>
+                            <span>🤝</span>
+                            <span>287 local businesses using</span>
                         </div>
                     </div>
                 </div>
@@ -1129,9 +1138,9 @@
                     
                     <div class="demo-tabs">
                         <button class="demo-tab active" onclick="switchDemoTab('realtor')">Real Estate</button>
-                        <button class="demo-tab" onclick="switchDemoTab('hvac')">HVAC/Home Services</button>
-                        <button class="demo-tab" onclick="switchDemoTab('law')">Law Firm</button>
-                        <button class="demo-tab" onclick="switchDemoTab('medical')">Medical/Spa</button>
+                        <button class="demo-tab" onclick="switchDemoTab('hvac')">HVAC/Plumbing</button>
+                        <button class="demo-tab" onclick="switchDemoTab('contractor')">Contractors</button>
+                        <button class="demo-tab" onclick="switchDemoTab('auto')">Auto Repair</button>
                     </div>
 
                     <div class="demo-content">
@@ -1315,42 +1324,42 @@
 
                 <div class="industry-card">
                     <div class="industry-header">
-                        <div class="industry-icon">⚖️</div>
+                        <div class="industry-icon">🔨</div>
                         <div>
-                            <h3>Law Firms</h3>
-                            <p style="color: var(--gray); font-size: 0.875rem;">All Practice Areas</p>
+                            <h3>Contractors</h3>
+                            <p style="color: var(--gray); font-size: 0.875rem;">Roofing, Remodeling, Concrete</p>
                         </div>
                     </div>
-                    <p>Qualify cases instantly, send intake forms, and schedule consultations before competitors even check email.</p>
+                    <p>Stop losing jobs to contractors who call back faster. Capture estimate requests, schedule consultations, and beat competitors to big projects.</p>
                     <div class="industry-results">
                         <div class="industry-result">
-                            <span class="result-value">67%</span>
-                            <span class="result-label">Faster intake</span>
+                            <span class="result-value">45%</span>
+                            <span class="result-label">More estimates</span>
                         </div>
                         <div class="industry-result">
-                            <span class="result-value">12</span>
-                            <span class="result-label">More clients/month</span>
+                            <span class="result-value">$31k</span>
+                            <span class="result-label">Monthly increase</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="industry-card">
                     <div class="industry-header">
-                        <div class="industry-icon">💆</div>
+                        <div class="industry-icon">🚗</div>
                         <div>
-                            <h3>Medical/Spa</h3>
-                            <p style="color: var(--gray); font-size: 0.875rem;">Aesthetic & Wellness</p>
+                            <h3>Auto Repair</h3>
+                            <p style="color: var(--gray); font-size: 0.875rem;">Mechanics, Body Shops, Detailing</p>
                         </div>
                     </div>
-                    <p>Book consultations, answer treatment questions, and send pricing while maintaining HIPAA compliance.</p>
+                    <p>While you're under a car, competitors are stealing your customers. Auto-respond to service inquiries, send quotes, and fill your bays.</p>
                     <div class="industry-results">
                         <div class="industry-result">
-                            <span class="result-value">35%</span>
-                            <span class="result-label">Less no-shows</span>
+                            <span class="result-value">38%</span>
+                            <span class="result-label">More bookings</span>
                         </div>
                         <div class="industry-result">
-                            <span class="result-value">$22k</span>
-                            <span class="result-label">Revenue boost</span>
+                            <span class="result-value">6</span>
+                            <span class="result-label">Extra cars/day</span>
                         </div>
                     </div>
                 </div>
@@ -1546,32 +1555,22 @@
     <section class="cta-section">
         <div class="container">
             <div class="cta-content">
-                <h2>Every Hour You Wait, Leads Choose Competitors</h2>
-                <p style="font-size: 1.25rem; margin-bottom: 2rem;">Join 287 Florida businesses already using AI to dominate their market</p>
+                <h2>Right Now, a Lead is Choosing Your Competitor</h2>
+                <p style="font-size: 1.25rem; margin-bottom: 2rem;">Because they answered first. Fix this before you lose another one.</p>
                 
-                <div class="cta-timer">
-                    <div class="timer-block">
-                        <div class="timer-number" id="timer-hours">00</div>
-                        <div class="timer-label">Hours</div>
-                    </div>
-                    <div class="timer-block">
-                        <div class="timer-number" id="timer-minutes">00</div>
-                        <div class="timer-label">Minutes</div>
-                    </div>
-                    <div class="timer-block">
-                        <div class="timer-number" id="timer-seconds">00</div>
-                        <div class="timer-label">Seconds</div>
+                <div class="cta-timer" style="margin: 2rem auto; max-width: 400px;">
+                    <div style="background: white; color: var(--dark); padding: 1.5rem; border-radius: 12px;">
+                        <p style="font-size: 1.125rem; margin-bottom: 0.5rem;"><strong>November Special:</strong></p>
+                        <p style="font-size: 0.875rem; margin: 0;">Setup this week, see results by Thanksgiving</p>
                     </div>
                 </div>
 
-                <p style="margin-bottom: 2rem;">Until This Offer Expires</p>
-
                 <button class="btn btn-primary" style="background: white; color: var(--emerald); padding: 1rem 3rem; font-size: 1.125rem;" onclick="scrollToPricing()">
-                    Claim Your Spot Now →
+                    Start Capturing Every Lead →
                 </button>
 
                 <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.9;">
-                    Only 2 spots remaining for January at this price
+                    Takes 3 hours to setup. Works forever.
                 </p>
             </div>
         </div>
@@ -1616,7 +1615,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <div>© 2024 Emerlytics. All rights reserved.</div>
+                <div>© 2025 Emerlytics. All rights reserved.</div>
                 <div>
                     <a href="#" style="color: #94a3b8; margin: 0 1rem;">Privacy Policy</a>
                     <a href="#" style="color: #94a3b8;">Terms of Service</a>
@@ -1675,20 +1674,20 @@
                     low: "Thanks for reaching out about your AC issues. We'd be happy to help! Our technicians are fully booked today but I can schedule you for first thing tomorrow morning. Would 8 AM work for you?"
                 }
             },
-            law: {
-                placeholder: "I need help with a business contract dispute, facing a deadline",
+            contractor: {
+                placeholder: "Need quote for kitchen remodel, looking to start next month",
                 responses: {
-                    high: "I understand you're facing a deadline with your contract dispute. Time is critical in these matters. I have an opening this afternoon at 3 PM for an emergency consultation. Please bring all relevant documents. Can you make it? If not, I can also meet tomorrow morning at 7 AM before court.",
-                    medium: "Thank you for reaching out about your contract dispute. These matters require immediate attention to protect your interests. I can offer you a consultation tomorrow at 10 AM or Thursday at 2 PM. The initial consultation is $299 and typically lasts one hour. Which time works better?",
-                    low: "Thank you for contacting our firm. Contract disputes are one of our specialties. I'd like to learn more about your situation to see how we can help. Please complete our intake form (link attached) and we can schedule a consultation later this week."
+                    high: "Great timing on your kitchen remodel! I have an opening tomorrow at 3 PM to come measure and provide a detailed quote. Most kitchens we're doing run $15-25k depending on finishes. I can bring samples and our portfolio. Does tomorrow work, or would Thursday morning be better?",
+                    medium: "Thanks for considering us for your kitchen remodel! We'd love to help transform your space. Our designer can meet with you this week to discuss your vision and provide a detailed quote. We're booking into next month which aligns perfectly with your timeline. When works best for you?",
+                    low: "Thank you for your interest in our remodeling services! We specialize in kitchen renovations and would be happy to provide a quote. Please let me know your address and preferred meeting times, and I'll schedule our estimator to visit."
                 }
             },
-            medical: {
-                placeholder: "I'm interested in Botox treatments and pricing",
+            auto: {
+                placeholder: "Car making grinding noise when I brake, need it looked at",
                 responses: {
-                    high: "Thank you for your interest in Botox! We're running a special this month - $11/unit (usually $14). Most patients need 20-30 units for optimal results. I actually have a cancellation tomorrow at 11 AM if you'd like a consultation. The consult is free and takes 30 minutes. Should I hold that spot for you?",
-                    medium: "Thanks for reaching out about Botox treatments! Our pricing is very competitive at $12/unit, and most treatments range from $240-400 depending on areas treated. We offer free consultations where we can discuss your goals and create a customized treatment plan. We have openings this week - would you prefer morning or afternoon?",
-                    low: "Thank you for your interest in our Botox treatments! We'd love to help you achieve your aesthetic goals. Our experienced injectors provide natural-looking results. Would you like me to send you our treatment menu with pricing, or would you prefer to schedule a complimentary consultation?"
+                    high: "Grinding brakes can be dangerous - this needs immediate attention! I can get you in TODAY at 2 PM. Brake inspection is free, and most brake jobs run $300-500 per axle. Can you bring it in at 2, or do you need our tow service? Safety first - don't wait on this.",
+                    medium: "Thanks for reaching out about your brake issue. Grinding sounds typically mean your brake pads are worn down to the metal - we should look at this soon. I have an opening tomorrow morning at 9 AM. We'll do a free inspection and give you a written estimate. Does that work?",
+                    low: "Thank you for contacting us about your brake concern. We'd be happy to diagnose the grinding noise. Our certified technicians can inspect your brakes and provide a detailed estimate. We have availability later this week. What day works best for you?"
                 }
             }
         };
@@ -1742,8 +1741,27 @@
                     reason = "Routine service inquiry";
                     responseType = 'medium';
                 }
+            } else if (currentIndustry === 'contractor') {
+                if (message.toLowerCase().includes('ready to start') || message.toLowerCase().includes('next month') || message.toLowerCase().includes('asap')) {
+                    score = 9;
+                    reason = "Project ready with timeline defined";
+                    responseType = 'high';
+                } else if (message.toLowerCase().includes('quote') || message.toLowerCase().includes('estimate')) {
+                    score = 7;
+                    reason = "Actively seeking estimates";
+                    responseType = 'medium';
+                }
+            } else if (currentIndustry === 'auto') {
+                if (message.toLowerCase().includes('grinding') || message.toLowerCase().includes('smoke') || message.toLowerCase().includes('won\'t start')) {
+                    score = 10;
+                    reason = "Safety issue requiring immediate service";
+                    responseType = 'high';
+                } else if (message.toLowerCase().includes('noise') || message.toLowerCase().includes('check')) {
+                    score = 7;
+                    reason = "Service needed soon";
+                    responseType = 'medium';
+                }
             }
-            // Add more industry logic...
             
             // Update display
             document.getElementById('lead-score').textContent = score;
@@ -1823,52 +1841,39 @@
             observer.observe(el);
         });
 
-        // Countdown timer
-        function updateTimer() {
-            const deadline = new Date();
-            deadline.setHours(deadline.getHours() + 24);
-            
-            const now = new Date();
-            const diff = deadline - now;
-            
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            document.getElementById('timer-hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('timer-minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('timer-seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-
-        setInterval(updateTimer, 1000);
-        updateTimer();
-
         // Random notifications
         const notifications = [
-            { title: "New signup!", message: "A real estate agency in Destin just started" },
-            { title: "Lead captured!", message: "HVAC company got 3 emergency calls in 10 minutes" },
-            { title: "Success story!", message: "Law firm closed 5 extra cases this month" },
-            { title: "Someone's looking!", message: "A medical spa in Pensacola is viewing pricing" }
+            { title: "New signup!", message: "A roofing company in Fort Walton Beach just started" },
+            { title: "Lead captured!", message: "Pest control company got 4 service requests today" },
+            { title: "Success story!", message: "Landscaping business closed 8 extra jobs this month" },
+            { title: "Someone's looking!", message: "A garage door repair in Navarre is viewing pricing" }
         ];
+
+        let notificationTimer;
 
         function showNotification() {
             const notification = notifications[Math.floor(Math.random() * notifications.length)];
             document.getElementById('notification-title').textContent = notification.title;
             document.getElementById('notification-message').textContent = notification.message;
-            
+
             const toast = document.getElementById('notification');
-            toast.classList.add('show');
             
-            setTimeout(() => {
+            clearTimeout(notificationTimer);
+            
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+            
+            notificationTimer = setTimeout(() => {
                 toast.classList.remove('show');
-            }, 5000);
+            }, 6000);
         }
 
-        // Show notification every 30 seconds
+        // Show notification every 45 seconds
         setTimeout(() => {
             showNotification();
-            setInterval(showNotification, 30000);
-        }, 5000);
+            setInterval(showNotification, 45000);
+        }, 8000);
 
         // FAQ toggle
         function toggleFAQ(element) {
@@ -1913,6 +1918,9 @@
 
         // Initialize ROI calculator
         calculateROI();
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
